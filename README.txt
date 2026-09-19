@@ -1,1 +1,0 @@
-150 MCQ Web Presentation: 3 subjects × 50. Upload all HTML files together to GitHub Pages. Subject click opens only that subject.
