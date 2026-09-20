@@ -1,0 +1,19 @@
+<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Current Affairs Quiz</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial;background:linear-gradient(135deg,#06172f,#0b5b68);color:#fff}.wrap{max-width:900px;margin:auto;padding:18px}
+.top{padding:22px;border-radius:22px;background:#ffffff14}.back{color:#fff;text-decoration:none}.card{margin-top:18px;background:#fff;color:#142;border-radius:22px;padding:22px;box-shadow:0 14px 35px #0006}.q{font-size:21px;font-weight:800;line-height:1.5}.opt{padding:14px;margin:10px 0;border:2px solid #ddd;border-radius:13px;cursor:pointer;background:#fafafa}.ok{background:#b8f5c9!important;border-color:#16a34a!important}.bad{background:#ffc2c2!important;border-color:#dc2626!important}.sol{margin-top:15px;padding:16px;border-left:5px solid #16a34a;background:#eef9f0;line-height:1.6}.btn{padding:11px 15px;border:0;border-radius:10px;cursor:pointer;margin-top:12px}.meta{opacity:.8}
+</style></head><body><div class="wrap"><a class="back" href="index.html">← Current Affairs Home</a>
+<div class="top"><h1 id="title">Current Affairs Quiz</h1><div class="meta" id="meta"></div></div><div id="app"></div></div>
+<script>
+let BANK=[],list=[],i=0,score=0,done=false;
+const exam=new URLSearchParams(location.search).get('exam')||'UPSC';
+const titles={UTET:'🟢 UTET Current Affairs',CTET:'🟠 CTET Current Affairs',UPSC:'🔵 UPSC Current Affairs'};
+document.getElementById('title').textContent=titles[exam]||titles.UPSC;
+fetch('data/questions.json').then(r=>r.json()).then(d=>{BANK=d;list=BANK.filter(x=>x.exam===exam);render();});
+function render(){if(!list.length){app.innerHTML='<div class="card">इस exam के प्रश्न उपलब्ध नहीं हैं।</div>';return}
+done=false;const q=list[i%list.length];document.getElementById('meta').textContent=`प्रश्न ${i+1}/${list.length} • Score ${score}`;
+app.innerHTML=`<div class="card"><div class="q">${q.q}</div>${q.opts.map((o,n)=>`<div class="opt" onclick="pick(this,${n})">${String.fromCharCode(65+n)}. ${o}</div>`).join('')}<div id="solution"></div></div>`;}
+function pick(el,n){if(done)return;done=true;const q=list[i%list.length];document.querySelectorAll('.opt').forEach((x,k)=>{if(k===q.ans)x.classList.add('ok')});if(n===q.ans)score++;else el.classList.add('bad');
+solution.innerHTML=`<div class="sol"><b>Concept:</b> ${q.concept}<br><br><a target="_blank" href="${q.source}">Official source ↗</a><br><button class="btn" onclick="next()">अगला प्रश्न →</button></div>`;document.getElementById('meta').textContent=`प्रश्न ${i+1}/${list.length} • Score ${score}`;}
+function next(){i=(i+1)%list.length;render();}
+</script></body></html>
