@@ -1,0 +1,1 @@
+Viewer Gyan: Class 8-12 SST. Chapter click -> 5 MCQs with 4 options, green correct answer and concept. Static GitHub Pages app.
